@@ -1,6 +1,6 @@
 # VitaDock Lite
 
-![screenshot of VitaDockLite](teaser.png?raw=true "VitaDockLite")
+<img src="./teaser.png" align="center"/>
 
 Yet another Vita Dock but instead of an entire Linux distro or a Docker container its a standalone utility
 
