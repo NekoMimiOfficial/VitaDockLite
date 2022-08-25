@@ -13,7 +13,6 @@ Audio support isn't implemented but as most people would do anyways using a Blue
 
 although its still in development you can use the current version of VDlite just fine (the app atleast since it makes the core) available in bin/ (add it to path)
 
-<div style="padding:5px;border:1px solid gray;border-radius:8px;">My first contribution to the vita communtiy and def not the last!</div>
 
 
 # Installation
