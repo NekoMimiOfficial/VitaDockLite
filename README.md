@@ -15,7 +15,7 @@ although its still in development you can use the current version of VDlite just
 
 
 # Installation
-clone this repo in ~/.local or any localtion then add $HOME/.local/VitaDockLite/bin/ to your $PATH
+clone this repo in `~/.local` or any localtion then add `$HOME/.local/VitaDockLite/bin/` to your `$PATH`
 
 run `chmod +x install.sh` then `./install.sh` which will install dependencies and set VDlite as executable
 
