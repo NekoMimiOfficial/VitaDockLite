@@ -1,5 +1,7 @@
 # VitaDock Lite
 
+![screenshot of VitaDockLite](teaser.png?raw=true "VitaDockLite")
+
 Yet another Vita Dock but instead of an entire Linux distro or a Docker container its a standalone utility
 
 dont let the Lite fool you, VitaDockLite has all the features you need to turn your PC into a dock to stream your PlayStation Vita's display
