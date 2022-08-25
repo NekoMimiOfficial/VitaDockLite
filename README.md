@@ -26,3 +26,9 @@ get a qtile based Windows Manager configured so starting VDlite up can be as sim
 get bluetooth audio to work (extra but nice to have)
 setup a store like interface to download homebrew off vitadb then automatically transfer it via FTP to the vita
 setup recording and streaming (extra may not do)
+
+
+#More ?
+Want to collab or talk? Hit me up! `Discord: NekoMimi#7225`
+Made with <3 for the vita community :D
+~NekoMimi
