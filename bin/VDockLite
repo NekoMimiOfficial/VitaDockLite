@@ -25,6 +25,8 @@ def load():
 			if a.startswith('fullscreen'):
 				try:
 					fs = int(a.split(' ')[1])
+					if not fs == 1 or not fs == 0:
+						fs = 0
 				except:
 					fs = 0
 		return theme, fs
