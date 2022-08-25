@@ -1,41 +1,28 @@
 #VitaDock Lite
 
-a standalone python script that serves as the brains to turn your PC (running any debian based distro) into a device to dock your vita in
-there are a couple of recommendations about your x-org display setup (this app needs x-org for the custom backgrounds function)
-an ideal setup would be like so:
+Yet another Vita Dock but instead of an entire Linux distro or a Docker container its a standalone utility
+dont let the Lite fool you, VitaDockLite has all the features you need to turn your PC into a dock to stream your PlayStation Vita's display
 
-```
- minimal install of openbox
- no panels or docks
- includes this app in the autostart file
-```
+VDlite (for my hands sake) uses mpv to display the video output of the vita which we get via the `udcd_uvc.skprx` plugin (i recommend NOT using autoplugin/2)
+Audio support isn't implemented but as most people would do anyways using a Bluetooth speaker or a speaker through an AUX cable is just fine
+although its still in development you can use the current version of VDlite just fine (the app atleast since it makes the core) available in bin/ (add it to path)
 
-you may place this script (including the files in the repo itself) anywhere
-usually `$HOME/.scripts/` or `$HOME/bin/`
-you can transform this into an executable by adding a shebang and ommiting the extension and running `chmod +x executableName`
-best way to install this would be to clone the repo directly to the script/bin folder of your choice
 
-to use this app you will need to install a couple of dependencies first:
-`sudo apt install python3 python3-pip mpv xwallpaper v4l-utils`
+#Installation
+clone this repo in ~/.local or any localtion then add $HOME/.local/VitaDockLite/bin/ to your $PATH
+run `chmod +x install.sh` then `./install.sh` which will install dependencies and set VDlite as executable
+run `VDockLite`
+thats it!
 
-then for the python dependencies:
-`pip3 install NekoMimi`
 
-i recommend running the pip3 command after a `sudo -h`
+#Project info
+So what's different about VDlite?
+VDlite doesnt force the user to install a new OS on their raspberry pi nor does it require docker
+it works on x-org Window Managers (works on Wayland and DEs but some features may be limited)
+has theme support and background music for that dock feel
 
-this app supports config files
-the main config is placed under `$HOME/.config/VDockLite/options.conf`
-pretty self explandatory (well commented)
-
-as for themes they are placed in the `theme/` folder
-they work by including 3 files
-`connect.*` (image)
-`connected.*` (image)
-`bgm.*` (music)
-
-the default theme contains assets (made by me and FOSS) that can be reused for other themes
-
-to restore a background just use your wallpaper manager (usually nitrogen, `nitrogen --restore`)
-
-Made by NekoMimi with <3
-long live the vita!
+current plan:
+get a qtile based Windows Manager configured so starting VDlite up can be as simple as logging into your account (and just that) (change your graphical session to return to your DE/WM/GUI)
+get bluetooth audio to work (extra but nice to have)
+setup a store like interface to download homebrew off vitadb then automatically transfer it via FTP to the vita
+setup recording and streaming (extra may not do)
