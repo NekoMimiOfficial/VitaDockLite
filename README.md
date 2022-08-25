@@ -47,6 +47,9 @@ setup a store like interface to download homebrew off vitadb then automatically 
 setup recording and streaming (extra may not do)
 
 
+# Configuration
+VDlite is configured via a file under `$HOME/.config/VDockLite/options.conf` its well commented
+
 
 # More ?
 Want to collab or talk? Hit me up! `Discord: NekoMimi#7225`
