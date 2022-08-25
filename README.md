@@ -1,4 +1,4 @@
-#VitaDock Lite
+# VitaDock Lite
 
 Yet another Vita Dock but instead of an entire Linux distro or a Docker container its a standalone utility
 dont let the Lite fool you, VitaDockLite has all the features you need to turn your PC into a dock to stream your PlayStation Vita's display
@@ -8,14 +8,14 @@ Audio support isn't implemented but as most people would do anyways using a Blue
 although its still in development you can use the current version of VDlite just fine (the app atleast since it makes the core) available in bin/ (add it to path)
 
 
-#Installation
+# Installation
 clone this repo in ~/.local or any localtion then add $HOME/.local/VitaDockLite/bin/ to your $PATH
 run `chmod +x install.sh` then `./install.sh` which will install dependencies and set VDlite as executable
 run `VDockLite`
 thats it!
 
 
-#Project info
+# Project info
 So what's different about VDlite?
 VDlite doesnt force the user to install a new OS on their raspberry pi nor does it require docker
 it works on x-org Window Managers (works on Wayland and DEs but some features may be limited)
@@ -28,7 +28,7 @@ setup a store like interface to download homebrew off vitadb then automatically 
 setup recording and streaming (extra may not do)
 
 
-#More ?
+# More ?
 Want to collab or talk? Hit me up! `Discord: NekoMimi#7225`
 Made with <3 for the vita community :D
 ~NekoMimi
