@@ -7,7 +7,7 @@ function getDistro() {
 distro=$(getDistro)
 
 echo "Verifying Linux Distribution and trying to install dependencies..."
-if [ $distro = "debian" ] 
+if ( $distro == "debian" ) 
 then 
     sudo apt update
     sudo apt install -y python3 python3-pip mpv xwallpaper v4l-utils
