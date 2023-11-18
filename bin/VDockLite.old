@@ -1,0 +1,110 @@
+#!/usr/bin/python3
+
+import os
+import time
+import subprocess
+from os import path
+from NekoMimi import utils as nm
+import multiprocessing as mp
+
+debug = 1
+
+banner = nm.figlet('VDock Lite','small')
+print(banner)
+
+def load():
+	pwd = subprocess.getoutput('pwd')
+	home = subprocess.getoutput('echo $HOME')
+	run = subprocess.getoutput('mkdir ~/.config/VDockLite/')
+	config = f'{home}/.config/VDockLite/options.conf'
+	if path.exists(config):
+		print("\u001b[34mLoading from config file...\u001b[0m")
+		base = nm.read(config)
+		lines = base.split("\n")
+		for a in lines:
+			if a.startswith('theme'):
+				theme = a.split(' ')[1]
+			if a.startswith('fullscreen'):
+				try:
+					fs = int(a.split(' ')[1])
+					if not fs == 1 or not fs == 0:
+						fs = 0
+				except:
+					fs = 0
+		return theme, fs
+	else:
+		nm.red("No config found, using default values")
+		run = subprocess.getoutput(f'cp {pwd}/../options.conf {config}')
+		theme = 'default'
+		fs = 0
+		return theme, fs
+
+theme, fs = load()
+
+def BGM(theme=theme):
+    pwd = subprocess.getoutput('pwd')
+    bgm = pwd + f"/../theme/{theme}/bgm*"
+    if path.exists(bgm):
+        construct = f"mpv {bgm} --no-audio-display --loop &"
+    else:
+        construct = "No BGM file, not playing any background music"
+    try:
+        os.remove('run.py')
+    except:
+        pass
+    if path.exists(bgm):
+        nm.write(construct,'../run.sh')
+        run = subprocess.Popen(['bash',f'{pwd}/../run.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        stdout,stderr=run.communicate()
+    nm.debug(debug, f'BGM loop returned {construct}')
+    return
+
+def loop(theme,fs):
+    b = mp.Process(target = BGM)
+    wallpaperEngine = "xwallpaper --zoom "
+    pwd = subprocess.getoutput('pwd')
+    home = subprocess.getoutput('echo $HOME')
+    connect = pwd + f"/../theme/{theme}/connect.*"
+    connected = pwd + f"/../theme/{theme}/connected.*"
+    bgm = pwd + f"/../theme/{theme}/bgm.*"
+    fullscreenC = ['','--fullscreen']
+    fullscreen = fullscreenC[fs]
+    b.start()
+    run = subprocess.getoutput(f"{wallpaperEngine}{connect}")
+    safe = 0
+
+    nm.yellow("Vita ready to connect")
+
+    while True:
+        nm.debug(debug, 'Vita check loop event')
+        #sudo apt install v4l-utils
+        devices = subprocess.getoutput('v4l2-ctl --list-devices')
+        entry = devices.split("\n")
+        x = 0
+        for line in entry:
+            x = x + 1
+            if line.startswith("PSVita"):
+                safe = 1
+                run = subprocess.getoutput(f"pkill mpv")
+                nm.blue("Vita Plugged in!")
+                vdev = f"/dev/video{entry[x][-1]}"
+                nm.yellow(f"Vita on> {vdev}")
+                print("\n")
+                run = subprocess.getoutput(f"{wallpaperEngine}{connected}")
+                run = subprocess.getoutput(f'mpv av://v4l2:{vdev} --profile=low-latency --untimed {fullscreen}')
+            else:
+                nm.debug( debug, "Vita not found, returning to loop")
+                run = subprocess.getoutput(f"{wallpaperEngine}{connect}")
+                if safe == 1:
+                    b.terminate()
+                    b = ''
+                    b = mp.Process(target = BGM)
+                    b.start()
+                    safe = 0
+        time.sleep(1)
+
+
+# main = mp.Process(target = loop)
+# main.start()
+if __name__ == '__main__':
+    loop(theme,fs)
