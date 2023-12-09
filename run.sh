@@ -1,1 +1,0 @@
-echo No BGM file, not playing any background music
