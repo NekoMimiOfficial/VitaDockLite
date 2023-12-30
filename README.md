@@ -10,8 +10,8 @@ VDlite (for my hands sake) uses mpv to display the video output of the vita whic
 # Installation
 
 ## IMPORTANT NOTE  
-VDlite is currently being rewritten thus it wont work OOTB  
-to use the last working version clone the repo then run:  
+Testing is needed to make sure everything works flawlessly  
+to use the last stable version clone the repo then run:  
 ```
 git checkout 76ee4b5
 ```
@@ -20,6 +20,9 @@ The `install.sh` file will install everything alongside the dependencies (for de
 ```
 curl -sSL https://raw.githubusercontent.com/NekoMimiOfficial/VitaDockLite/main/install.sh | bash
 ```
+please note that the app is installed to `~/.local/share/VDlite`  
+while the executable is a symlink found at `~/.local/bin`  
+make sure to add it to your path  
 
 if your distro isn't supported you can manually run the steps below:  
 ### Linux  

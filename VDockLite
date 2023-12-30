@@ -1,16 +1,26 @@
 #!/usr/bin/python3
 
+from os import name
+from re import sub
+import time
 import subprocess
+import multiprocessing
 from os.path import exists
 
 from NekoMimi import utils as nm
 from NekoMimi import colourimi
+from pyfiglet import main
 
 class Pallet:
     text = "#DDDDDD"
     text2 = "#888888"
+    mochaBG = "#1E1E2E"
+    mochaFG = "#CDD6F4"
     catBlue = "#799DDB"
     catRed = "#F38BA8"
+    catCyan = "#89DCEB"
+    catPink = "#F5C2E7"
+    catYellow = "#F9E2AF"
     catOrange = "#F3B993"
     catGreen = "#A2DCAA"
     catPurr = "#C6A1F0"
@@ -32,7 +42,7 @@ def kprint(text, col=Pallet.text):
     factory.cprint()
     return
 
-kprint(banner, Pallet.text)
+kprint(banner, Pallet.mochaFG)
 kprint(license, Pallet.text2)
 
 #variables
@@ -65,14 +75,24 @@ def conf_parse(conf):
                 tks[line.split(" ", 1)[0]] = line.split(" ", 1)[1]
     return tks
 
+def safeRules(rawTOKENS):
+    if "fullscreen" in rawTOKENS:
+        try:
+            val = int(rawTOKENS["fullscreen"])
+            if val < 0 or val > 1:
+                rawTOKENS["fullscreen"] = '0'
+        except Exception as e:
+            rawTOKENS["fullscreen"] = '0'
+
 if exists(DEF_CONFIG):
-    kprint("Loading from file", Pallet.catOrange)
+    kprint("Loading from file", Pallet.catYellow)
     flags = conf_parse(DEF_CONFIG)
 else:
     kprint("No config file found", Pallet.catRed)
     subprocess.getoutput("mkdir ~/.config/VDockLite/")
     nm.write(DEF_CONF, DEF_CONFIG)
     flags = conf_parse(DEF_CONFIG)
+    flags = safeRules(flags)
 
 class Options:
     def __init__(self, tk) -> None:
@@ -98,3 +118,49 @@ class Options:
 
 settings = Options(flags)
 kprint(settings, Pallet.catPurr)
+print("")
+
+def bgmPlayer():
+    currentBGM = f"{HOME}/.local/share/VDlite/themes/{settings.theme}/BGM.*"
+    play = exists(currentBGM)
+    if play:
+        subprocess.getoutput("pkill mpv")
+        cmd = f"mpv {currentBGM} --loop --no-audio-display"
+        run = subprocess.Popen(['bash', cmd], 
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+        stdO, stdE = run.communicate()
+
+
+def mainProc():
+    player = 0
+    bgPlayer = multiprocessing.Process(target=bgmPlayer)
+    bgPlayer.start()
+
+    kprint("Vita ready to connect", Pallet.catOrange)
+
+    while True:
+        devices = subprocess.getoutput("v4l2-ctl --list-devices")
+        lines = devices.split("\n")
+        i = 0
+        for line in lines:
+            i += 1
+            if line.startswith("PSVita"):
+                player = 1
+                subprocess.getoutput("pkill mpv")
+                kprint("Vita plugged in!", Pallet.catBlue)
+                vdev = f"/dev/video{lines[i][-1]}"
+                kprint(f"Vita on> {vdev}", Pallet.catYellow)
+                print("\n===============================\n")
+                subprocess.getoutput(f'mpv av://v4l2:{vdev} --profile=low-latency --untimed {settings.full}')
+            else:
+                if player == 1:
+                    bgPlayer.terminate()
+                    del bgPlayer
+                    bgPlayer = multiprocessing.Process(target=bgmPlayer)
+                    bgPlayer.start()
+                    player = 0
+        time.sleep(1)
+
+if __name__ == "__main__":
+    mainProc()
