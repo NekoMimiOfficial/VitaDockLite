@@ -1,12 +1,18 @@
 #!/usr/bin/python3
 
+import sys
 import time
+import random
 import subprocess
 import multiprocessing
 from os.path import exists
 
 from NekoMimi import utils as nm
 from NekoMimi import colourimi
+
+__author__ = "NekoMimiOfficial"
+__email__ = "nekomimi@tilde,team"
+__version__ = '0.2.1'
 
 class Pallet:
     text = "#DDDDDD"
@@ -22,14 +28,28 @@ class Pallet:
     catGreen = "#A2DCAA"
     catPurr = "#C6A1F0"
 
-license = """
- ^ ^  VitaDockLite v0.2.0  supports the PS Vita
+    def random(self):
+        slots = [self.text, 
+                 self.text2, 
+                 self.mochaFG, 
+                 self.catYellow, 
+                 self.catOrange, 
+                 self.catBlue, 
+                 self.catPurr, 
+                 self.catRed, 
+                 self.catCyan, 
+                 self.catPink, 
+                 self.catGreen]
+        return random.choice(slots)
+
+__disclaimer__ = """
+ ^ ^  VitaDockLite vXXXXX  supports the PS Vita
 =UwU= This app is provided with [ZERO] warranty
  w w  NekoMimi @ NekoLabs (2023)   made with <3
 """
 
 banner = nm.figlet("VDock Lite", "small")
-
+__disclaimer__ = __disclaimer__.replace("XXXXX", __version__)
 factory = colourimi.colourFactory()
 
 def kprint(text, col=Pallet.text):
@@ -40,12 +60,17 @@ def kprint(text, col=Pallet.text):
     return
 
 kprint(banner, Pallet.mochaFG)
-kprint(license, Pallet.text2)
+kprint(__disclaimer__, Pallet.text2)
 
 #variables
 PWD = subprocess.getoutput('pwd')
 HOME = subprocess.getoutput('echo $HOME')
 DEF_CONFIG = f"{HOME}/.config/VDockLite/settings.conf"
+
+#argv handler
+if "--version" in sys.argv:
+    kprint(f"VDockLite v{__version__}", Pallet.random(Pallet))
+    exit(0)
 
 #config processing
 DEF_CONF = """
@@ -160,4 +185,4 @@ def mainProc():
         time.sleep(1)
 
 if __name__ == "__main__":
-    mainProc()
+        mainProc()
