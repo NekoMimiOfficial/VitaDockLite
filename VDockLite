@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-from os import name
-from re import sub
 import time
 import subprocess
 import multiprocessing
@@ -9,7 +7,6 @@ from os.path import exists
 
 from NekoMimi import utils as nm
 from NekoMimi import colourimi
-from pyfiglet import main
 
 class Pallet:
     text = "#DDDDDD"

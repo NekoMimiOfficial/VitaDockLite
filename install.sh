@@ -47,13 +47,13 @@ fi
 
 #pip dep installation
 if [[ $pip -eq 1 ]]; then
-  sudo -H pip3 install ./pip/NekoMimi.whl
   mkdir ~/.local/share/VDlite
   mkdir ~/.local/bin
   git clone git@github.com:/NekoMimiOfficial/VitaDockLite ~/.local/share/VDlite --depth 1
+  sudo -H pip3 install ~/.local/share/VDlite/pip/NekoMimi.whl
   chmod +x ~/.local/share/VDlite/VDockLite
   ln -s -r ~/.local/share/VDlite/VDockLite ~/.local/bin
   echo "Installation completed!"
-  echo "you may add VDlite to your path by editing your shellrc file to include the bin folder"
+  echo "you may add VDlite to your path by editing your shell-rc file to include the bin folder"
   echo "\$PATH=\$PATH:\$HOME/.local/bin"
 fi
