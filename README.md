@@ -5,12 +5,7 @@ Yet another Vita Dock but instead of an entire Linux distro or a Docker containe
 
 despite being called "Lite", VitaDockLite has all the features you need to turn your PC into a dock to stream your PlayStation Vita's display  
 
-
 VDlite (for my hands sake) uses mpv to display the video output of the vita which we get via the `udcd_uvc.skprx` plugin (i recommend NOT using autoplugin/2)  
-
-Audio support isn't implemented but as most people would do anyways using a Bluetooth speaker or a speaker through an AUX cable is just fine  
-* further plans include routing an AUX cable from the vita to the MIC input of the PC then enabling it with PulseAudio  
-
 
 # Installation
 

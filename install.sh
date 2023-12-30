@@ -41,6 +41,7 @@ elif [[ $installType -eq 2 ]]; then
   pacman -Syu python python-pip git mpv v4l-utils
   pip=1
 else
+  echo "Unsupported distribution :("
   pip=0
 fi
 
