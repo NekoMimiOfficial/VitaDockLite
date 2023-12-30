@@ -1,37 +1,52 @@
 #!/bin/bash
 
-#distro=$(getDistro)
-distroID=$(cat /etc/*-release | grep ^ID=)
-distro=$(echo $distroID | cut -d '=' -f2)
-echo $distro
-echo "Verifying Linux Distribution and trying to install dependencies..."
-if [ $distro == "debian" ] 
-then 
-    sudo apt update
-    sudo apt install -y python3 python3-pip mpv xwallpaper v4l-utils
-    
-    #define variable to continue dependencies installation
-    continue=1
-elif [ $distro == "arch" ] 
-then 
-    sudo pacman -Syu --noconfirm python python-pip mpv xwallpaper v4l-utils
-    
-    #define variable to continue dependencies installation
-    continue=1
-else 
-    echo "Linux Distribution not supported"
-    
-    #define variable to cancell dependencies installation
-    continue=0
+#get distro ID
+distroIDP=$(cat /etc/*-release | grep ^ID=)
+distroID=$(echo $distroIDP | cut -d '=' -f2)
+
+#get distro ID_LIKE
+distroIDLP=$(cat /etc/*-release | grep ^ID_LIKE=)
+distroIDL=$(echo $distroIDLP | cut -d '=' -f2)
+
+#print info
+echo "Detected distribution: "$distroID
+echo "Detected ID-like: "$distroIDL
+
+#set debian flag
+if [ $distroIDL == "debian" ]
+then
+  installType=1
+elif [ $distroID == "debian" ]
+then
+  installType=1
+else
+  installType=0
 fi
 
-
-if [ $continue -eq 1 ]
+#set arch flag
+if [ $distroIDL == "arch" ]
 then
-    sudo -H pip3 install NekoMimi
+  installType=2
+elif [ $distroID == "arch" ]
+then
+  installType=2
+fi
 
-    echo "Setting VitaDockLite as an executable file..."
-    chmod +x bin/VDockLite
+#dep installation
+if [[ $installType -eq 1 ]]; then
+  sudo apt-get update
+  sudo apt-get install -y python3 python3-pip mpv v4l-utils
+  pip=1
+elif [[ $installType -eq 2 ]]; then
+  pacman -Syu python python-pip mpv v4l-utils
+  pip=1
+else
+  pip=0
+fi
 
-    echo "All done! enjoy VitaDockLite <3"
+#pip dep installation
+if [[ $pip -eq 1 ]]; then
+  sudo -H pip3 install ./pip/NekoMimi.whl
+  mkdir ~/.local/share/VDlite
+  git clone git@github.com:/NekoMimiOfficial/VitaDockLite ~/.local/share/VDlite --depth 1
 fi

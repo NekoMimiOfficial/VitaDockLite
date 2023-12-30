@@ -1,10 +1,10 @@
-Please supply your bgm.* as this projects is licensed under the APACHE2 license
+Please supply your bgm.* as this projects is licensed under the APACHE2 license  
 
-the way themes work is by including 3 files:
+# Theme folder layout  
+* ThemeName  
+>    * Dark.* (Boot splash dark)  
+>    * Light.* (Boot splash light)  
+>    * BGM.* (Idle background music)  
 
 
-connect.* (image)
-
-connected.* (image)
-
-bgm.* (sound)
+!: Filenames are case sensitive  
