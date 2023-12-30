@@ -16,10 +16,14 @@ Audio support isn't implemented but as most people would do anyways using a Blue
 
 ## IMPORTANT NOTE  
 VDlite is currently being rewritten thus it wont work OOTB  
+to use the last working version clone the repo then run:  
+```
+git checkout 76ee4b5
+```
 
 The `install.sh` file will install everything alongside the dependencies (for debian and arch based linux distros) which can be easily ran like so:  
 ```
-curl https://raw.github.com/NekoMimiOfficial/VitaDockLite/tree/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/NekoMimiOfficial/VitaDockLite/main/install.sh | bash
 ```
 
 if your distro isn't supported you can manually run the steps below:  

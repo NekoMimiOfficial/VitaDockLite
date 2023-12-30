@@ -35,10 +35,10 @@ fi
 #dep installation
 if [[ $installType -eq 1 ]]; then
   sudo apt-get update
-  sudo apt-get install -y python3 python3-pip mpv v4l-utils
+  sudo apt-get install -y python3 python3-pip git mpv v4l-utils
   pip=1
 elif [[ $installType -eq 2 ]]; then
-  pacman -Syu python python-pip mpv v4l-utils
+  pacman -Syu python python-pip git mpv v4l-utils
   pip=1
 else
   pip=0
