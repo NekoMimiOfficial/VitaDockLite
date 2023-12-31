@@ -105,6 +105,16 @@ def safeRules(rawTOKENS):
                 rawTOKENS["fullscreen"] = '0'
         except Exception as e:
             rawTOKENS["fullscreen"] = '0'
+    else:
+        rawTOKENS["fullscreen"] = '0'
+
+    if "dark" in rawTOKENS:
+        if rawTOKENS["dark"] == '1':
+            rawTOKENS["dark"] = "Dark"
+        elif rawTOKENS["dark"] == '0':
+            rawTOKENS["dark"] = "Light"
+        else:
+            rawTOKENS["dark"] = "Dark"
 
 if exists(DEF_CONFIG):
     kprint("Loading from file", Pallet.catYellow)
@@ -174,6 +184,8 @@ def mainProc():
                 vdev = f"/dev/video{lines[i][-1]}"
                 kprint(f"Vita on> {vdev}", Pallet.catYellow)
                 print("\n===============================\n")
+                if settings.full == '1':
+                    subprocess.getoutput(f"mpv {HOME}/.local/themes/{settings.theme}/{settings.dark}.* {settings.full}")
                 subprocess.getoutput(f'mpv av://v4l2:{vdev} --profile=low-latency --untimed {settings.full}')
             else:
                 if player == 1:
