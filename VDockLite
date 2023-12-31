@@ -12,7 +12,8 @@ from NekoMimi import colourimi
 
 __author__ = "NekoMimiOfficial"
 __email__ = "nekomimi@tilde,team"
-__version__ = '0.2.1'
+__version__ = "0.2.2"
+
 
 class Pallet:
     text = "#DDDDDD"
@@ -29,18 +30,21 @@ class Pallet:
     catPurr = "#C6A1F0"
 
     def random(self):
-        slots = [self.text, 
-                 self.text2, 
-                 self.mochaFG, 
-                 self.catYellow, 
-                 self.catOrange, 
-                 self.catBlue, 
-                 self.catPurr, 
-                 self.catRed, 
-                 self.catCyan, 
-                 self.catPink, 
-                 self.catGreen]
+        slots = [
+            self.text,
+            self.text2,
+            self.mochaFG,
+            self.catYellow,
+            self.catOrange,
+            self.catBlue,
+            self.catPurr,
+            self.catRed,
+            self.catCyan,
+            self.catPink,
+            self.catGreen,
+        ]
         return random.choice(slots)
+
 
 __disclaimer__ = """
  ^ ^  VitaDockLite vXXXXX  supports the PS Vita
@@ -52,6 +56,7 @@ banner = nm.figlet("VDock Lite", "small")
 __disclaimer__ = __disclaimer__.replace("XXXXX", __version__)
 factory = colourimi.colourFactory()
 
+
 def kprint(text, col=Pallet.text):
     factory.text = text
     factory.colour = col
@@ -59,25 +64,27 @@ def kprint(text, col=Pallet.text):
     factory.cprint()
     return
 
+
 kprint(banner, Pallet.mochaFG)
 kprint(__disclaimer__, Pallet.text2)
 
-#variables
-PWD = subprocess.getoutput('pwd')
-HOME = subprocess.getoutput('echo $HOME')
+# variables
+FS = ["", "--fullscreen"]
+PWD = subprocess.getoutput("pwd")
+HOME = subprocess.getoutput("echo $HOME")
 DEF_CONFIG = f"{HOME}/.config/VDockLite/settings.conf"
 
-#argv handler
+# argv handler
 if "--version" in sys.argv:
     kprint(f"VDockLite v{__version__}", Pallet.random(Pallet))
     exit(0)
 
-#config processing
+# config processing
 DEF_CONF = """
 fullscreen 0
 #sets whether the video streams open in fullscreen
 
-theme none
+theme default
 #sets themes , named by folder name
 
 splash 0
@@ -86,6 +93,7 @@ splash 0
 dark 1
 #uses dark splash
 """
+
 
 def conf_parse(conf):
     data = nm.read(conf)
@@ -97,28 +105,36 @@ def conf_parse(conf):
                 tks[line.split(" ", 1)[0]] = line.split(" ", 1)[1]
     return tks
 
+
 def safeRules(rawTOKENS):
     if "fullscreen" in rawTOKENS:
         try:
             val = int(rawTOKENS["fullscreen"])
+            rawTOKENS["fullscreen"] = val
             if val < 0 or val > 1:
-                rawTOKENS["fullscreen"] = '0'
+                rawTOKENS["fullscreen"] = 0
         except Exception as e:
-            rawTOKENS["fullscreen"] = '0'
+            rawTOKENS["fullscreen"] = 0
     else:
-        rawTOKENS["fullscreen"] = '0'
+        rawTOKENS["fullscreen"] = 0
 
     if "dark" in rawTOKENS:
-        if rawTOKENS["dark"] == '1':
+        if rawTOKENS["dark"] == "1":
             rawTOKENS["dark"] = "Dark"
-        elif rawTOKENS["dark"] == '0':
+        elif rawTOKENS["dark"] == "0":
             rawTOKENS["dark"] = "Light"
         else:
             rawTOKENS["dark"] = "Dark"
+    else:
+        rawTOKENS["dark"] = "Dark"
+
+    return rawTOKENS
+
 
 if exists(DEF_CONFIG):
     kprint("Loading from file", Pallet.catYellow)
     flags = conf_parse(DEF_CONFIG)
+    flags = safeRules(flags)
 else:
     kprint("No config file found", Pallet.catRed)
     subprocess.getoutput("mkdir ~/.config/VDockLite/")
@@ -126,12 +142,13 @@ else:
     flags = conf_parse(DEF_CONFIG)
     flags = safeRules(flags)
 
+
 class Options:
     def __init__(self, tk) -> None:
-        self.full = '0'
-        self.theme = 'none'
-        self.splash = '0'
-        self.dark = ''
+        self.full: int = 0
+        self.theme = "default"
+        self.splash = "0"
+        self.dark = ""
 
         self.sets(tk)
 
@@ -148,9 +165,11 @@ class Options:
     def __str__(self):
         return f"[fs] {self.full}\n[theme] {self.theme}\n[splash] {self.splash}\n[dark] {self.dark}"
 
+
 settings = Options(flags)
 kprint(settings, Pallet.catPurr)
 print("")
+
 
 def bgmPlayer():
     currentBGM = f"{HOME}/.local/share/VDlite/themes/{settings.theme}/BGM.*"
@@ -158,9 +177,9 @@ def bgmPlayer():
     if play:
         subprocess.getoutput("pkill mpv")
         cmd = f"mpv {currentBGM} --loop --no-audio-display"
-        run = subprocess.Popen(['bash', cmd], 
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
+        run = subprocess.Popen(
+            ["bash", cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
         stdO, stdE = run.communicate()
 
 
@@ -184,9 +203,13 @@ def mainProc():
                 vdev = f"/dev/video{lines[i][-1]}"
                 kprint(f"Vita on> {vdev}", Pallet.catYellow)
                 print("\n===============================\n")
-                if settings.full == '1':
-                    subprocess.getoutput(f"mpv {HOME}/.local/themes/{settings.theme}/{settings.dark}.* {settings.full}")
-                subprocess.getoutput(f'mpv av://v4l2:{vdev} --profile=low-latency --untimed {settings.full}')
+                if settings.splash == "1":
+                    path = f"{HOME}/.local/share/VDlite/themes/{settings.theme}/{settings.dark}.*"
+                    if exists(path):
+                        subprocess.getoutput(f"mpv {path} {FS[settings.full]}")
+                subprocess.getoutput(
+                    f"mpv av://v4l2:{vdev} --profile=low-latency --untimed {FS[settings.full]}"
+                )
             else:
                 if player == 1:
                     bgPlayer.terminate()
@@ -196,5 +219,6 @@ def mainProc():
                     player = 0
         time.sleep(1)
 
+
 if __name__ == "__main__":
-        mainProc()
+    mainProc()
