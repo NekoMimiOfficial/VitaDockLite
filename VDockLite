@@ -6,13 +6,14 @@ import random
 import subprocess
 import multiprocessing
 from os.path import exists
+from os import listdir
 
 from NekoMimi import utils as nm
 from NekoMimi import colourimi
 
 __author__ = "NekoMimiOfficial"
 __email__ = "nekomimi@tilde,team"
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 
 
 class Pallet:
@@ -172,11 +173,15 @@ print("")
 
 
 def bgmPlayer():
-    currentBGM = f"{HOME}/.local/share/VDlite/themes/{settings.theme}/BGM.*"
-    play = exists(currentBGM)
+    currentBGM = f"{HOME}/.local/share/VDlite/themes/{settings.theme}/"
+    items = listdir(currentBGM)
+    for file in items:
+        if file.upper().startswith('BGM'):
+            bgmFile = file
+            play = True
     if play:
         subprocess.getoutput("pkill mpv")
-        cmd = f"mpv {currentBGM} --loop --no-audio-display"
+        cmd = f"mpv {currentBGM+bgmFile} --loop --no-audio-display"
         run = subprocess.Popen(
             ["bash", cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
