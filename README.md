@@ -6,7 +6,9 @@ Yet another Vita Dock but instead of an entire Linux distro or a Docker containe
 despite being called "Lite", VitaDockLite has all the features you need to turn your PC into a dock to stream your PlayStation Vita's display  
 
 VDlite (for my hands sake) uses mpv to display the video output of the vita which we get via the `udcd_uvc.skprx` plugin (i recommend NOT using autoplugin/2)  
-
+  
+Please note that a new fork of this dock will be created soon to add more features and be more polished as a GUI application that serves as a vita companion more than it being just a dock, while this project remains a minimal solution for those who dont need the extra features and just a simple streaming app  
+  
 # Installation  
 
 ## IMPORTANT NOTE  
@@ -59,12 +61,7 @@ has theme support (bootup splash) and background music for that dock feel, givin
 VDlite is essentially a script meaning it can run in the background quietly and can be made to start on boot  
 
 ### ToDo list:  
-* []Add easy windows support  
-* []Audio support  
-* []Implement start splash  
-* []Sync BGM from vita  
-* []Recording support  
-* []Switch to a better player than `mpv`  
+found in the `changelog.md`  
 
 ### Configuration  
 VDlite is configured via a file under `$HOME/.config/VDockLite/settings.conf` its well commented  

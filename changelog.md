@@ -1,7 +1,8 @@
 # Upcoming  
 - remove themes  
 - remove BG music  
-- branch for a GUI/non script version (with themes and BGM)  
+- add recording capabilities  
+- change default video player  
   
 # v0.2.3  
 - BGM files are case insensitive   
