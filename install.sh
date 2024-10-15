@@ -50,7 +50,7 @@ if [[ $pip -eq 1 ]]; then
   mkdir ~/.local/share/VDlite
   mkdir ~/.local/bin
   git clone git@github.com:/NekoMimiOfficial/VitaDockLite ~/.local/share/VDlite --depth 1
-  sudo -H pip3 install ~/.local/share/VDlite/pip/NekoMimi.whl
+  sudo -H pip3 install ~/.local/share/VDlite/pip/NekoMimi*.whl
   chmod +x ~/.local/share/VDlite/VDockLite
   ln -s -r ~/.local/share/VDlite/VDockLite ~/.local/bin
   echo "Installation completed!"
