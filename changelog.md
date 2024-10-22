@@ -1,11 +1,17 @@
 # Upcoming  
-- remove themes  
-- remove BG music  
 - add recording capabilities  
 - change default video player  
+-> to be added in GUI app  
+  
+# v1.0.0  
+- removed BGM playback  
+- made project bare-bones in favour of an upcoming GUI app  
+- Fixed most bugs and all warnings  
   
 # v0.2.3  
-- BGM files are case insensitive   
+- BGM files are case insensitive  
+- Fixed bugs in the BGM player  
+- code enhancements  
   
 # v0.2.2  
 - implemented boot/start splash  

@@ -4,16 +4,14 @@ import sys
 import time
 import random
 import subprocess
-import multiprocessing
 from os.path import exists
-from os import listdir
 
 from NekoMimi import utils as nm
 from NekoMimi import colourimi
 
 __author__ = "NekoMimiOfficial"
 __email__ = "nekomimi@tilde,team"
-__version__ = "0.2.3"
+__version__ = "1.0.0"
 
 
 class Pallet:
@@ -59,7 +57,7 @@ __disclaimer__ = __disclaimer__.replace("XXXXX", __version__)
 factory = colourimi.colourFactory()
 
 
-def kprint(text, col=Pallet.text):
+def kprint(text: str, col=Pallet.text):
     factory.text = text
     factory.colour = col
     factory.cinit()
@@ -85,15 +83,6 @@ if "--version" in sys.argv:
 DEF_CONF = """
 fullscreen 0
 #sets whether the video streams open in fullscreen
-
-theme default
-#sets themes , named by folder name
-
-splash 0
-#toggles connection splash
-
-dark 1
-#uses dark splash
 """
 
 
@@ -115,20 +104,10 @@ def safeRules(rawTOKENS):
             rawTOKENS["fullscreen"] = val
             if val < 0 or val > 1:
                 rawTOKENS["fullscreen"] = 0
-        except Exception as e:
+        except Exception:
             rawTOKENS["fullscreen"] = 0
     else:
         rawTOKENS["fullscreen"] = 0
-
-    if "dark" in rawTOKENS:
-        if rawTOKENS["dark"] == "1":
-            rawTOKENS["dark"] = "Dark"
-        elif rawTOKENS["dark"] == "0":
-            rawTOKENS["dark"] = "Light"
-        else:
-            rawTOKENS["dark"] = "Dark"
-    else:
-        rawTOKENS["dark"] = "Dark"
 
     return rawTOKENS
 
@@ -148,24 +127,15 @@ else:
 class Options:
     def __init__(self, tk) -> None:
         self.full: int = 0
-        self.theme = "default"
-        self.splash = "0"
-        self.dark = ""
 
         self.sets(tk)
 
     def sets(self, tk):
         if "fullscreen" in tk:
             self.full = tk["fullscreen"]
-        if "theme" in tk:
-            self.theme = tk["theme"]
-        if "splash" in tk:
-            self.splash = tk["splash"]
-        if "dark" in tk:
-            self.dark = tk["dark"]
 
     def __str__(self):
-        return f"[fs] {self.full}\n[theme] {self.theme}\n[splash] {self.splash}\n[dark] {self.dark}"
+        return f"[fullscreen] {self.full}"
 
 
 settings = Options(flags)
@@ -173,29 +143,7 @@ kprint(settings, Pallet.catPurr)
 print("")
 
 
-def bgmPlayer():
-    currentBGM = f"{HOME}/.local/share/VDlite/themes/{settings.theme}/"
-    items = listdir(currentBGM)
-    play = False
-    bgmFile = ""
-    for file in items:
-        if file.upper().startswith('BGM'):
-            bgmFile = file
-            play = True
-    if play:
-        subprocess.getoutput("pkill mpv")
-        cmd = f"mpv {currentBGM+bgmFile} --loop --no-audio-display"
-        run = subprocess.Popen(
-            ["bash", cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        stdO, stdE = run.communicate()
-
-
 def mainProc():
-    player = 0
-    bgPlayer = multiprocessing.Process(target=bgmPlayer)
-    bgPlayer.start()
-
     kprint("Vita ready to connect", Pallet.catOrange)
 
     while True:
@@ -205,28 +153,19 @@ def mainProc():
         for line in lines:
             i += 1
             if line.startswith("PSVita"):
-                player = 1
                 subprocess.getoutput("pkill mpv")
                 kprint("Vita plugged in!", Pallet.catBlue)
                 vdev = f"/dev/video{lines[i][-1]}"
                 kprint(f"Vita on> {vdev}", Pallet.catYellow)
                 print("\n===============================\n")
-                if settings.splash == "1":
-                    path = f"{HOME}/.local/share/VDlite/themes/{settings.theme}/{settings.dark}.*"
-                    if exists(path):
-                        subprocess.getoutput(f"mpv {path} {FS[settings.full]}")
                 subprocess.getoutput(
                     f"mpv av://v4l2:{vdev} --profile=low-latency --untimed {FS[settings.full]}"
                 )
-            else:
-                if player == 1:
-                    bgPlayer.terminate()
-                    del bgPlayer
-                    bgPlayer = multiprocessing.Process(target=bgmPlayer)
-                    bgPlayer.start()
-                    player = 0
         time.sleep(1)
 
 
 if __name__ == "__main__":
     mainProc()
+else:
+    kprint("Please run this script via 'python3 -m' or invoke it directly from your shell './VDlite'", Pallet.catRed)
+    exit(89)
