@@ -30,19 +30,20 @@ class Pallet:
     catGreen = "#A2DCAA"
     catPurr = "#C6A1F0"
 
-    def random(self):
+    @staticmethod
+    def random():
         slots = [
-            self.text,
-            self.text2,
-            self.mochaFG,
-            self.catYellow,
-            self.catOrange,
-            self.catBlue,
-            self.catPurr,
-            self.catRed,
-            self.catCyan,
-            self.catPink,
-            self.catGreen,
+            Pallet.text,
+            Pallet.text2,
+            Pallet.mochaFG,
+            Pallet.catYellow,
+            Pallet.catOrange,
+            Pallet.catBlue,
+            Pallet.catPurr,
+            Pallet.catRed,
+            Pallet.catCyan,
+            Pallet.catPink,
+            Pallet.catGreen,
         ]
         return random.choice(slots)
 
@@ -77,7 +78,7 @@ DEF_CONFIG = f"{HOME}/.config/VDockLite/settings.conf"
 
 # argv handler
 if "--version" in sys.argv:
-    kprint(f"VDockLite v{__version__}", Pallet.random(Pallet))
+    kprint(f"VDockLite v{__version__}", Pallet.random())
     exit(0)
 
 # config processing
@@ -175,6 +176,8 @@ print("")
 def bgmPlayer():
     currentBGM = f"{HOME}/.local/share/VDlite/themes/{settings.theme}/"
     items = listdir(currentBGM)
+    play = False
+    bgmFile = ""
     for file in items:
         if file.upper().startswith('BGM'):
             bgmFile = file
